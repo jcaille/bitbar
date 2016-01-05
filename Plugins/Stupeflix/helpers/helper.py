@@ -154,6 +154,17 @@ def print_repos_status(platform = None):
         repo_dir = os.path.join(repos_base_dir, r)
         print "%s %s %s | bash='%s %s;exit'" % (git_string, r, branch_string, EDITOR_COMMAND, repo_dir)
 
+    additional_repos = []
+    if platform is "ios":
+        additional_repos = ["replayapp", "chickenapp", "superlapse", "legend"]
+
+    if len(additional_repos) > 0:
+        print "---"
+        for r in additional_repos :
+            git_string, branch_string = repos_status(r)
+            repo_dir = os.path.join(repos_base_dir, r)
+            print "%s %s %s | bash='%s %s;exit'" % (git_string, r, branch_string, EDITOR_COMMAND, repo_dir)
+
 
 def print_status(module, is_module = True, build = True, custom_command = None):
     state_string = u"❓"
