@@ -27,6 +27,14 @@ Homebrew Cask users can, alternatively, install BitBar by running `brew cask ins
 
 [Browse our plugins](https://github.com/matryer/bitbar/tree/master/Plugins) to find useful scripts, or [write your own](https://github.com/matryer/bitbar/tree/master/Plugins#write-your-own)
 
+## Get started (Stupeflix edition)
+
+* [Get the latest version of BitBar](https://github.com/matryer/bitbar/releases) for FREE, or pick a [different release](https://github.com/matryer/bitbar/releases)
+* If you need to build the app, clone the repo and init the submoduls `git submodule update --init --recursive`. Build and run it through XCode
+* Copy it to your Applications folder and run it - it will ask you to (create and) select a plugins folder. Select the `Plugins/Stupeflix`directory
+* Select the scripts that you'd like to run (rename the scripts to `off.foobar` to deactivate a script)
+* Launch bitbar
+
 ## It's free, so please donate
 
 If you love this, any BitCoin donations are most welcome, to `1DGoNEYAnjE5DqK7y5zMPR4PLU5HLKpLNR` or [send something useful (Amazon Wishlist)](http://amzn.to/1Pd9yOt).
@@ -66,7 +74,83 @@ In case you made the mistake of choosing a directory with thousands of files as 
 
 `defaults delete com.matryer.BitBar`
 
+<<<<<<< c72b9f386c73e76325e6ae7e7d6a5a0c55b108b4
 ## Thanks
+=======
+## Writing a plugin
+
+  * To write a plugin, just write some form of executable script that outputs to the standard output.
+  * Multiple lines will be cycled through over and over.
+  * If your output contians a line consisting only of `---`, the lines below it will appear in the dropdown for that plugin, but won't appear in the menu bar itself.
+  * Your lines might contain `|` to separate the title from other parameters, such as...
+    * `href=..` to make the dropdown items clickable
+    * `color=..` to change their text color. eg. `color=red` or `color=#ff0000`
+    * `font=..` to change their text font. eg. `font=UbuntuMono-Bold`
+    * `size=..` to change their text size. eg. `size=12`
+    * `bash=..` to make the dropdown items open terminal with your script e.g. `bash=/Users/user/BitBar_Plugins/scripts/nginx.restart.sh`
+    * `param1=..` if sh script need params
+    * `param2=..` if sh script need params
+    * `param3=..` if sh script need params
+    * `terminal=..` if need to start bash script without open Terminal may be true or false
+  * If you're writing scripts, ensure it has a shebang at the top.
+
+### Examples
+
+#### One line plugin
+
+    #!/bin/bash
+    date
+
+#### Multi-line plugin
+
+    #!/bin/bash
+
+    # the current date and time
+    date
+
+    # the current username
+    echo $USER
+
+    # the current user id
+    id -u
+
+#### Multi-line plugin with extra data
+
+    #!/bin/bash
+    echo "One"
+    echo "Two"
+    echo "Three"
+    echo "---"
+    echo "Four"
+    echo "Five"
+    echo "Six"
+
+  * Only One, Two and Three will appear in the top bar
+  * Clicking the plugin menu item will show all lines
+
+
+#### Multi-line plugin with links and colors
+
+    #!/bin/bash
+    curl -m 1 http://example.com -I >/dev/null 2>&1
+    [ $? -gt 0 ] && echo "FAIL | color=red" || echo "OK | color=green"
+    echo "---"
+    echo "Show Graphs | color=#123def href=http://example.com/graph?foo=bar"
+    echo "Show KPI Report | color=purple href=http://example.com/report"
+
+#### Multi-line plugin with fonts and colors
+
+![BitBar Example showing colored fonts](https://raw.github.com/matryer/bitbar/master/Docs/BitBar-Example-Menu-Colors-Fonts.png)
+
+    #!/bin/zsh
+    FONT=( 'size=14' 'font=UbuntuMono' )
+    if ((0)); then echo "DO | $FONT color=orange"
+    else           echo "DO | $FONT color=cadetblue"
+    echo "---"
+    ...
+
+### Written something good?
+>>>>>>> Stupeflix Plugins
 
   * Special thanks to [@muhqu](https://github.com/muhqu) and [@tylerb](https://github.com/tylerb) for all their help (see commit history for details)
   * Thanks to [@mazondo](https://twitter.com/mazondo) for the BitBar logo
