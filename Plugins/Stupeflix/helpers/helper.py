@@ -146,7 +146,7 @@ def print_repos_status(platform = None):
     print "sx repos clone | bash='senv;sx repos clone'"
     print "sx self_update | bash='senv;sx self_update'"
     print "---"
-    repos_base_dir = conf.defaults.get("bundle.repos_dir")
+    repos_base_dir = conf.get("bundle.repos_dir")
     if repos_base_dir is None :
         repos_base_dir = "~/devel"
     for r in repos :
