@@ -1,0 +1,10 @@
+{
+    "git.platform" : "ios",
+    "git.action": "open",
+    "git.additional_repos": [
+        "replayapp",
+        "legend",
+        "chickenapp",
+        "superlapse"
+    ]
+}

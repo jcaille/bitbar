@@ -9,11 +9,27 @@ from bundle.build.platforms import _call_platform_fun as call_platform_fun
 import os
 from stupeflix.utils.commands import cd
 import sh
+import json
 
 UTF8Writer = codecs.getwriter('utf8')
 sys.stdout = UTF8Writer(sys.stdout)
+OPTIONS = None
 
-EDITOR_COMMAND = "sublime"
+def get_option(key, default = None):
+    global OPTIONS
+    if OPTIONS is None :
+        bitbarrc_file = os.path.expanduser("~/.bitbarrc")
+        if not os.path.exists(bitbarrc_file) :
+            return default
+        try :
+            f = open(bitbarrc_file)
+            OPTIONS = json.loads(f.read())
+            f.close()
+        except Exception as e:
+            OPTIONS = {}
+            return default
+    return OPTIONS.get(key, default)
+
 
 def get_modules(platform = None, has_repo = None):
     module_conf = conf.defaults['bundle.build_modules']
@@ -135,6 +151,11 @@ def print_platform_status(platform = "ios"):
         print "%s %s | bash='senv ; sx build --xcompile %s %s --no-deps --rebuild'" % (s, m, platform, m)
 
 def print_repos_status(platform = None):
+    if platform is None :
+        platform = get_option("git.platform", None)
+    action = get_option("git.action", "open")
+    additional_repos = get_option("git.additional_repos", [])
+
     git_modules = get_modules(platform = platform, has_repo = True)
     repos = list(set( [git_modules[k]["repos"] for k in git_modules.keys()] ))
     repos.sort()
@@ -152,18 +173,15 @@ def print_repos_status(platform = None):
     for r in repos :
         git_string, branch_string = repos_status(r)
         repo_dir = os.path.join(repos_base_dir, r)
-        print "%s %s %s | bash='%s %s;exit'" % (git_string, r, branch_string, EDITOR_COMMAND, repo_dir)
+        print "%s %s %s | bash='%s %s;exit'" % (git_string, r, branch_string, action, repo_dir)
 
-    additional_repos = []
-    if platform is "ios":
-        additional_repos = ["replayapp", "chickenapp", "superlapse", "legend"]
 
     if len(additional_repos) > 0:
         print "---"
         for r in additional_repos :
             git_string, branch_string = repos_status(r)
             repo_dir = os.path.join(repos_base_dir, r)
-            print "%s %s %s | bash='%s %s;exit'" % (git_string, r, branch_string, EDITOR_COMMAND, repo_dir)
+            print "%s %s %s | bash='%s %s;exit'" % (git_string, r, branch_string, action, repo_dir)
 
 
 def print_status(module, is_module = True, build = True, custom_command = None):
@@ -192,4 +210,4 @@ def print_status(module, is_module = True, build = True, custom_command = None):
     print res
 
 if __name__ == '__main__':
-    print_repos_status("ios")
+    print get_option("git.action")
