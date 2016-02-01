@@ -117,12 +117,12 @@ def print_platform_status(platform = "ios"):
 
     # Get the status of all modules
     git_modules = get_modules(platform = platform, has_repo = True).keys() ; git_modules.sort()
-    git_modules_status = [module_status(m) for m in git_modules]
+    git_modules_status = [module_status(m, platform) for m in git_modules]
     module_count += len(git_modules_status)
     built_module_count += sum([s == "up_to_date" for s in git_modules_status])
 
     external_modules = get_modules(platform = platform, has_repo = False).keys() ; external_modules.sort()
-    external_modules_status = [module_status(m) for m in external_modules]
+    external_modules_status = [module_status(m, platform) for m in external_modules]
     module_count += len(external_modules_status)
     built_module_count += sum([s == "up_to_date" for s in external_modules_status])
 
