@@ -94,7 +94,7 @@ def module_status(module, platform = "ios"):
     build_states_path = get_build_states_cache_path(platform, arch)
     build_states = BuildStatesCache(build_states_path)
     expected = build_states.get(module)
-    current = get_module_state(module, build_states, fingerprint, hash_result=True)
+    current = get_module_state(module, build_states, fingerprint)
     build_states[module] = current
     if expected is None :
         return "unknown"
